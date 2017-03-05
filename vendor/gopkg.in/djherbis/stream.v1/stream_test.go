@@ -116,6 +116,28 @@ func TestMem(t *testing.T) {
 	testFile(f, t)
 }
 
+func TestReadAtWait(t *testing.T) {
+	f, err := NewStream("test.txt", NewMemFS())
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+	r, err := f.NextReader()
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+	go func() {
+		<-time.After(10 * time.Millisecond)
+		f.Close()
+	}()
+	data := make([]byte, 10)
+	n, err := r.ReadAt(data, 0)
+	if n != 0 || err != io.EOF {
+		t.Errorf("Unexpected, should be empty: %d, %s", n, err)
+	}
+}
+
 func TestRemove(t *testing.T) {
 	f, err := NewStream("test.txt", NewMemFS())
 	if err != nil {
@@ -144,8 +166,9 @@ func testFile(f *Stream, t *testing.T) {
 	}
 
 	for i := 0; i < 10; i++ {
-		f.Write(testdata)
+		f.Write(testdata[:10])
 		<-time.After(10 * time.Millisecond)
+		f.Write(testdata[10:])
 	}
 
 	f.Close()
@@ -174,5 +197,12 @@ func testReader(f *Stream, t *testing.T) {
 	if !bytes.Equal(buf.Bytes(), bytes.Repeat(testdata, 10)) {
 		t.Errorf("unequal %s", buf.Bytes())
 		return
+	}
+	l, closed := r.Size()
+	if !closed {
+		t.Errorf("expected writer to be closed, but was open")
+	}
+	if l != int64(len(testdata)*10) {
+		t.Errorf("expected size to be %d but got %d", len(testdata)*10, l)
 	}
 }

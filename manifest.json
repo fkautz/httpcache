@@ -1,0 +1,13 @@
+{
+    "dependencies": {
+        "github.com/elazarl/goproxy": {
+            "branch": "master"
+        },
+        "github.com/fkautz/tigerbat": {
+            "branch": "master"
+        },
+        "github.com/gorilla/handlers": {
+            "branch": "master"
+        }
+    }
+}

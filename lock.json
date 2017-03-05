@@ -1,0 +1,86 @@
+{
+    "memo": "b49498f257186c5fb83990e9ad6050a04678f3551d68b8c25a985604e431130c",
+    "projects": [
+        {
+            "name": "github.com/boltdb/bolt",
+            "branch": "master",
+            "revision": "e9cf4fae01b5a8ff89d0ec6b32f0d9c9f79aefdd",
+            "packages": [
+                "."
+            ]
+        },
+        {
+            "name": "github.com/davecgh/go-spew",
+            "version": "v1.1.0",
+            "revision": "346938d642f2ec3594ed81d874461961cd0faa76",
+            "packages": [
+                "spew"
+            ]
+        },
+        {
+            "name": "github.com/elazarl/goproxy",
+            "branch": "master",
+            "revision": "6016d2397298b0750eeb06f4d24e03cfd7e45c77",
+            "packages": [
+                "."
+            ]
+        },
+        {
+            "name": "github.com/fkautz/tigerbat",
+            "branch": "master",
+            "revision": "4cf48f1483625baa3164e9fdb49adf6c050d28aa",
+            "packages": [
+                "cache/diskcache"
+            ]
+        },
+        {
+            "name": "github.com/gorilla/handlers",
+            "branch": "master",
+            "revision": "3a5767ca75ece5f7f1440b1d16975247f8d8b221",
+            "packages": [
+                "."
+            ]
+        },
+        {
+            "name": "github.com/pmezard/go-difflib",
+            "version": "v1.0.0",
+            "revision": "792786c7400a136282c1664665ae0a8db921c6c2",
+            "packages": [
+                "difflib"
+            ]
+        },
+        {
+            "name": "github.com/rainycape/vfs",
+            "branch": "master",
+            "revision": "a62fd22bcf7010946a44f6a1250a82c03110a14b",
+            "packages": [
+                "."
+            ]
+        },
+        {
+            "name": "github.com/stretchr/testify",
+            "version": "v1.1.4",
+            "revision": "69483b4bd14f5845b5a1e55bca19e954e827f1d0",
+            "packages": [
+                "assert",
+                "require"
+            ]
+        },
+        {
+            "name": "golang.org/x/sys",
+            "branch": "master",
+            "revision": "075e574b89e4c2d22f2286a7e2b919519c6f3547",
+            "packages": [
+                "unix"
+            ]
+        },
+        {
+            "name": "gopkg.in/djherbis/stream.v1",
+            "version": "v1.2.0",
+            "revision": "26b9a1fb834dbe1e5782c5c87f119338d0de7af3",
+            "packages": [
+                "."
+            ]
+        }
+    ]
+}
