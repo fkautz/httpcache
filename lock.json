@@ -1,10 +1,10 @@
 {
-    "memo": "b49498f257186c5fb83990e9ad6050a04678f3551d68b8c25a985604e431130c",
+    "memo": "87cb5683bf7393600c2ef8552e8aba1338959552fc1c048a067a437942581b63",
     "projects": [
         {
             "name": "github.com/boltdb/bolt",
-            "branch": "master",
-            "revision": "e9cf4fae01b5a8ff89d0ec6b32f0d9c9f79aefdd",
+            "version": "v1.3.0",
+            "revision": "583e8937c61f1af6513608ccc75c97b6abdf4ff9",
             "packages": [
                 "."
             ]
@@ -28,7 +28,7 @@
         {
             "name": "github.com/fkautz/tigerbat",
             "branch": "master",
-            "revision": "4cf48f1483625baa3164e9fdb49adf6c050d28aa",
+            "revision": "1a5fa07d1b779ef7f62738d9576390f9014ef4a0",
             "packages": [
                 "cache/diskcache"
             ]
@@ -36,7 +36,7 @@
         {
             "name": "github.com/gorilla/handlers",
             "branch": "master",
-            "revision": "3a5767ca75ece5f7f1440b1d16975247f8d8b221",
+            "revision": "13d73096a474cac93275c679c7b8a2dc17ddba82",
             "packages": [
                 "."
             ]
@@ -69,7 +69,7 @@
         {
             "name": "golang.org/x/sys",
             "branch": "master",
-            "revision": "075e574b89e4c2d22f2286a7e2b919519c6f3547",
+            "revision": "e48874b42435b4347fc52bdee0424a52abc974d7",
             "packages": [
                 "unix"
             ]

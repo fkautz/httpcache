@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/boltdb/bolt"
+	"strings"
 )
 
 type Cache interface {
@@ -18,7 +19,10 @@ type Cache interface {
 	GetRange(key string, offset, length int64) (io.ReadCloser, error)
 	Hit(key string) error
 	Put(key string, writer io.Reader) error
+	Remove(key string)
 	Shutdown() error
+
+	GetFile(key string) (*os.File, error)
 }
 
 func New(root string, maxSize int64, cleanedSize int64) (Cache, error) {
@@ -106,6 +110,12 @@ func (dc *diskCache) GetRange(key string, offset, length int64) (io.ReadCloser, 
 	return reader, nil
 }
 
+func (dc *diskCache) GetFile(key string) (*os.File, error) {
+	dc.Hit(key)
+	key = path.Join(dc.root, key)
+	return os.Open(key)
+}
+
 func (dc *diskCache) Put(key string, reader io.Reader) error {
 	dc.fslock.Lock()
 	defer dc.fslock.Unlock()
@@ -143,7 +153,9 @@ type entryHeap []entry
 
 func (h entryHeap) Len() int            { return len(h) }
 func (h entryHeap) Less(i, j int) bool  { return h[i].lastHit.Before(h[j].lastHit) }
-func (h entryHeap) Swap(i, j int)       { h[i], h[j] = h[j], h[i] }
+func (h entryHeap) Swap(i, j int)       {
+	h[i], h[j] = h[j], h[i]
+}
 func (h *entryHeap) Push(x interface{}) { *h = append(*h, x.(entry)) }
 func (h *entryHeap) Pop() interface{} {
 	old := *h
@@ -190,6 +202,7 @@ func (dc *diskCache) fixSize() {
 }
 
 func (dc *diskCache) clean() {
+	log.Println("clean called")
 	keys := &entryHeap{}
 	heap.Init(keys)
 	dc.db.View(func(tx *bolt.Tx) error {
@@ -212,20 +225,39 @@ func (dc *diskCache) clean() {
 		return nil
 	})
 
+	log.Println(dc.size, dc.cleanedSize)
+	log.Println(keys)
+
 	for dc.size > dc.cleanedSize {
 		log.Println("cleaning: ", dc.size, ">", dc.cleanedSize)
+		log.Println()
+		log.Println("Before ---")
+		log.Println(keys)
+		log.Println()
 		key := heap.Pop(keys).(entry)
-		dc.remove(key.key)
+		dc.Remove(key.key)
+		log.Println()
+		log.Println("After --- ")
+		log.Println(keys)
+		log.Println()
 	}
 }
 
-func (dc *diskCache) remove(key string) {
-	file := path.Join(dc.root, key)
+func (dc *diskCache) Remove(key string) {
+	file := key
+	if !strings.HasPrefix(key, dc.root) {
+		file = path.Join(dc.root, key)
+	}
 	info, err := os.Stat(file)
 	if err != nil {
+		log.Println(err)
 		return
 	}
-	os.Remove(file)
+	err = os.Remove(file)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 	dc.db.Update(remove(key))
 	dc.size = dc.size - info.Size()
 }
